@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 import 'package:qr_code_payment_system/UI_Model/Theme.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import '../model/user.dart';
 import 'dart:io';
 
 
@@ -40,44 +39,7 @@ class _RegisterUserState extends State<RegisterUser> {
       print('Failed to pick image: $e');
     }
   }
-  Future register() async {
-          var uri = "http://192.168.43.16/Qr_code_payment_system/API/register.php";
-        var request = http.MultipartRequest('POST', Uri.parse(uri));
-
-          //add text fields
-          request.fields["txtusername"] = txtusername_f.text;
-          request.fields["txtpassword"] = txtpassword_f.text;
-          request.fields["txtrestaurant"] = txtrestaurant_f.text;
-          request.fields["txtphone"] = txtphone_f.text;
-          request.fields["txtaddress"] = txtaddress_f.text;
-          //request.fields["text_field"] = text;
-
-          if(image != null){
-            var pic = await http.MultipartFile.fromPath("image", image!.path);
-
-            request.files.add(pic);
-
-            await request.send().then((result) {
-
-              http.Response.fromStream(result).then((response) {
-
-                var message = jsonDecode(response.body);
-                // show snackbar if input data successfully
-                final snackBar = SnackBar(content: Text(message['message']));
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
-                //get new list images
-               // getImageServer();
-              });
-
-            }).catchError((e) {
-
-              print(e);
-
-            });
-          }
-
-  }
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
